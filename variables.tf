@@ -20,3 +20,9 @@ variable "instance_type" {
   type        = string
   default     = "t3.micro"
 }
+
+variable "master_host_ip" {
+  description = "The ip of the host running the tf file"
+  type        = string
+  default     = "<insert host ip here>"
+}
