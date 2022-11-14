@@ -101,28 +101,28 @@ resource "aws_security_group" "allow_tcp" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] #need to change to: var.master_host_ip
   }
    ingress {
     description = "SSH from VPC"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] #need to change to: var.master_host_ip
   }
   ingress {
     description = "HTTPS from VPC"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] #need to change to: var.master_host_ip
   }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] #need to change to: var.master_host_ip
   }
 
   tags = {
@@ -156,29 +156,5 @@ resource "aws_ebs_volume" "WebVol" {
     Name = "TeraTaskVol"
   }
 }
-
-// Attaching above volume to the EC2 instance
-#resource "aws_volume_attachment" "WebVolAttach" {
-#  depends_on = [
-#       aws_ebs_volume.WebVol,
-#  ]
-
-#  device_name = "/dev/sdc"
-#  volume_id = "${aws_ebs_volume.WebVol.id}"
-#  instance_id = "${aws_instance.WebHost.id}"
-#  skip_destroy = true
-#}
-
-// Configuring the external volume
-#resource "null_resource" "setupVol" {
-#  depends_on = [
-#    aws_volume_attachment.WebVolAttach,
-#  ]
-
-  //
-#  provisioner "local-exec" {
-#    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ~/.ssh/${var.key_name}.pem -i '${aws_instance.WebHost.public_ip},' ansiblemain.yml"
-#  }
-#}
 
 
